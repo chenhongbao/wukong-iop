@@ -28,8 +28,18 @@
 
 package com.nabiki.wukong.ctp4j.jni.struct;
 
-public class CThostFtdcSubscribeDepth implements java.io.Serializable {
-    public String[] InstrumentID;
+public class CThostFtdcCandleField implements java.io.Serializable {
+    public String InstrumentID;
+    public double OpenPrice;
+    public double HighestPrice;
+    public double LowestPrice;
+    public double ClosePrice;
+    public double AveragePrice;
+    public int Volume;
+    public double OpenInterest;
+    public String TradingDay;
+    public String ActionDay;
+    public String UpdateTime;
 
-    public CThostFtdcSubscribeDepth() {}
+    public CThostFtdcCandleField() {}
 }

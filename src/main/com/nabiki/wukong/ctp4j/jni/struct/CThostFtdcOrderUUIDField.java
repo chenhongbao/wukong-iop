@@ -26,44 +26,14 @@
  * SOFTWARE.
  */
 
-package com.nabiki.wukong.iop;
-
-import com.nabiki.ctp4j.jni.struct.*;
-import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcCandleField;
-import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcOrderUUIDField;
+package com.nabiki.wukong.ctp4j.jni.struct;
 
 import java.util.UUID;
 
-public abstract class ClientMessageAdaptor {
-    public void rspReqOrderInsert(CThostFtdcOrderUUIDField order, UUID requestID,
-                                  UUID responseID, int count, int total) {
-    }
+public class CThostFtdcOrderUUIDField implements java.io.Serializable {
+    public UUID OrderID;
+    public String BrokerID;
+    public String UserID;
 
-    public void rspReqOrderAction(CThostFtdcOrderUUIDField order, UUID requestID,
-                                  UUID responseID, int count, int total) {
-    }
-
-    public void rspQryAccount(CThostFtdcTradingAccountField account, UUID requestID,
-                              UUID responseID,int count, int total) {
-    }
-
-    public void rspQryOrder(CThostFtdcOrderField rtnOrder, UUID requestID,
-                            UUID responseID,int count, int total) {
-    }
-
-    public void rspQryPosition(CThostFtdcInvestorPositionField position,
-                               UUID requestID, UUID responseID, int count,
-                               int total) {
-    }
-
-    public void rspSubscribeMarketData(CThostFtdcSpecificInstrumentField subscribe,
-                                       UUID requestID, UUID responseID, int count,
-                                       int total) {
-    }
-
-    public void rspDepthMarketData(CThostFtdcDepthMarketDataField depth) {
-    }
-
-    public void rspCandle(CThostFtdcCandleField candle) {
-    }
+    public CThostFtdcOrderUUIDField() {}
 }

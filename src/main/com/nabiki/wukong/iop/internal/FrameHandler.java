@@ -29,8 +29,9 @@
 package com.nabiki.wukong.iop.internal;
 
 import com.nabiki.ctp4j.jni.struct.*;
-import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcOrderUUID;
-import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcSubscribeDepth;
+import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcCandleField;
+import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcOrderUUIDField;
+import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcSubMarketDataField;
 import com.nabiki.wukong.iop.ClientMessageAdaptor;
 import com.nabiki.wukong.iop.ServerMessageAdaptor;
 import com.nabiki.wukong.iop.SessionAdaptor;
@@ -95,7 +96,7 @@ public class FrameHandler implements IoHandler {
                         body.RequestID, body.CurrentCount, body.TotalCount);
                 break;
             case QRY_ORDER:
-                var qryOrder = OP.fromJson(body.Json, CThostFtdcOrderUUID.class);
+                var qryOrder = OP.fromJson(body.Json, CThostFtdcOrderUUIDField.class);
                 this.serverAdaptor.qryOrder(this.session, qryOrder, body.RequestID,
                         body.CurrentCount, body.TotalCount);
                 break;
@@ -118,7 +119,7 @@ public class FrameHandler implements IoHandler {
                         body.RequestID, body.CurrentCount, body.TotalCount);
                 break;
             case SUB_MD:
-                var sub = OP.fromJson(body.Json, CThostFtdcSubscribeDepth.class);
+                var sub = OP.fromJson(body.Json, CThostFtdcSubMarketDataField.class);
                 this.serverAdaptor.subDepthMarketData(sub, body.RequestID,
                         body.CurrentCount, body.TotalCount);
                 break;
@@ -148,25 +149,29 @@ public class FrameHandler implements IoHandler {
                         body.ResponseID, body.CurrentCount, body.TotalCount);
                 break;
             case RSP_REQ_ORDER_ACTION:
-                var rspAction = OP.fromJson(body.Json, CThostFtdcOrderUUID.class);
+                var rspAction = OP.fromJson(body.Json, CThostFtdcOrderUUIDField.class);
                 this.clientAdaptor.rspReqOrderAction(rspAction, body.RequestID,
                         body.ResponseID, body.CurrentCount, body.TotalCount);
                 break;
             case RSP_REQ_ORDER_INSERT:
-                var rspInsert = OP.fromJson(body.Json, CThostFtdcOrderUUID.class);
+                var rspInsert = OP.fromJson(body.Json, CThostFtdcOrderUUIDField.class);
                 this.clientAdaptor.rspReqOrderInsert(rspInsert, body.RequestID,
                         body.ResponseID, body.CurrentCount, body.TotalCount);
                 break;
             case RSP_SUB_MD:
                 var rspMd = OP.fromJson(body.Json,
                         CThostFtdcSpecificInstrumentField.class);
-                this.clientAdaptor.rspSubscribeDepth(rspMd, body.RequestID,
+                this.clientAdaptor.rspSubscribeMarketData(rspMd, body.RequestID,
                         body.ResponseID, body.CurrentCount, body.TotalCount);
                 break;
-            case FLOW_MD:
+            case FLOW_DEPTH:
                 var md = OP.fromJson(body.Json,
                         CThostFtdcDepthMarketDataField.class);
                 this.clientAdaptor.rspDepthMarketData(md);
+                break;
+            case FLOW_CANDLE:
+                var cnd = OP.fromJson(body.Json, CThostFtdcCandleField.class);
+                this.clientAdaptor.rspCandle(cnd);
                 break;
             default:
                 throw new IllegalStateException(
