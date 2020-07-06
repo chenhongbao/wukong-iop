@@ -26,21 +26,10 @@
  * SOFTWARE.
  */
 
-package com.nabiki.wukong.iop.frame;
+package com.nabiki.wukong.ctp4j.jni.struct;
 
-public enum MessageType implements java.io.Serializable {
-    HEARTBEAT,
-    SUB_MD,
-    RSP_SUB_MD,
-    FLOW_MD,
-    REQ_ORDER_INSERT,
-    RSP_REQ_ORDER_INSERT,
-    REQ_ORDER_ACTION,
-    RSP_REQ_ORDER_ACTION,
-    QRY_ACCOUNT,
-    RSP_QRY_ACCOUNT,
-    QRY_ORDER,
-    RSP_QRY_ORDER,
-    QRY_POSITION,
-    RSP_QRY_POSITION
+public class CThostFtdcSubscribeDepth implements java.io.Serializable {
+    public String[] InstrumentID;
+
+    public CThostFtdcSubscribeDepth() {}
 }

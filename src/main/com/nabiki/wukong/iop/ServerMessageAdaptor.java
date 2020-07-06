@@ -33,6 +33,7 @@ import com.nabiki.ctp4j.jni.struct.CThostFtdcInputOrderField;
 import com.nabiki.ctp4j.jni.struct.CThostFtdcQryInvestorPositionField;
 import com.nabiki.ctp4j.jni.struct.CThostFtdcQryTradingAccountField;
 import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcOrderUUID;
+import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcSubscribeDepth;
 
 import java.util.UUID;
 
@@ -60,4 +61,7 @@ public abstract class ServerMessageAdaptor {
                             UUID requestID, int count, int total) {
     }
 
+    public void subDepthMarketData(CThostFtdcSubscribeDepth subscribe,
+                                   UUID requestID, int count, int total) {
+    }
 }

@@ -28,9 +28,7 @@
 
 package com.nabiki.wukong.iop;
 
-import com.nabiki.ctp4j.jni.struct.CThostFtdcInvestorPositionField;
-import com.nabiki.ctp4j.jni.struct.CThostFtdcOrderField;
-import com.nabiki.ctp4j.jni.struct.CThostFtdcTradingAccountField;
+import com.nabiki.ctp4j.jni.struct.*;
 import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcOrderUUID;
 
 import java.util.UUID;
@@ -55,5 +53,13 @@ public abstract class ClientMessageAdaptor {
     public void rspQryPosition(CThostFtdcInvestorPositionField position,
                                UUID requestID, UUID responseID, int count,
                                int total) {
+    }
+
+    public void rspSubscribeDepth(CThostFtdcSpecificInstrumentField subscribe,
+                                  UUID requestID, UUID responseID, int count,
+                                  int total) {
+    }
+
+    public void rspDepthMarketData(CThostFtdcDepthMarketDataField depth) {
     }
 }

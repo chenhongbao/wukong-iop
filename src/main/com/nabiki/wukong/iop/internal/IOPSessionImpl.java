@@ -29,10 +29,7 @@
 package com.nabiki.wukong.iop.internal;
 
 import com.nabiki.wukong.iop.IOPSession;
-import com.nabiki.wukong.iop.frame.Body;
-import com.nabiki.wukong.iop.frame.Frame;
-import com.nabiki.wukong.iop.frame.FrameType;
-import com.nabiki.wukong.iop.frame.OP;
+import com.nabiki.wukong.iop.frame.*;
 import org.apache.mina.core.session.IoSession;
 
 import java.nio.charset.StandardCharsets;
@@ -95,6 +92,7 @@ public class IOPSessionImpl implements IOPSession {
     public void sendHeartbeat(UUID heartbeatID) {
         var body = new Body();
         body.RequestID = heartbeatID;
+        body.Type = MessageType.HEARTBEAT;
         send(body, FrameType.HEARTBEAT);
     }
 

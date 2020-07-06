@@ -30,7 +30,7 @@ package com.nabiki.wukong.ctp4j.jni.struct;
 
 import java.util.UUID;
 
-public class CThostFtdcOrderUUID {
+public class CThostFtdcOrderUUID implements java.io.Serializable {
     public UUID OrderID;
     public String BrokerID;
     public String UserID;
