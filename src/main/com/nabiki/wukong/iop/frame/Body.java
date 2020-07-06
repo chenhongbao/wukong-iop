@@ -26,24 +26,45 @@
  * SOFTWARE.
  */
 
-package com.nabiki.wukong.iop.codec;
+package com.nabiki.wukong.iop.frame;
 
-public class FrameType {
-    public static final int HEARTBEAT = 0;
-    public static final int POST_LOGIN = 1;
-    public static final int POST_LOGOUT = 2;
-    public static final int POST_ORDER = 3;
-    public static final int POST_ACTION = 4;
-    public static final int GET_ORDER = 5;
-    public static final int GET_ACCOUNT = 6;
-    public static final int GET_POSITION = 7;
-    public static final int GET_POSITION_DETAIL = 8;
-    public static final int RSP_POST_LOGIN = 101;
-    public static final int RSP_POST_LOGOUT = 102;
-    public static final int RSP_POST_ORDER = 103;
-    public static final int RSP_POST_ACTION = 104;
-    public static final int RSP_GET_ORDER = 105;
-    public static final int RSP_GET_ACCOUNT = 106;
-    public static final int RSP_GET_POSITION = 107;
-    public static final int RSP_GET_POSITION_DETAIL = 108;
+import java.util.UUID;
+
+public class Body implements java.io.Serializable {
+    /**
+     * If the message is a request, the request ID identifies this request. If the
+     * message is a response, the request ID identifies that the request that
+     * it responds to.
+     */
+    public UUID RequestID;
+
+    /**
+     * If the message is a response, the response ID identifies this response. Else
+     * the field is set to null.
+     */
+    public UUID ResponseID;
+
+    /**
+     * Message type {@link MessageType}.
+     */
+    public MessageType Type;
+
+    /**
+     * The counter counts how many messages have ben sent for this request or
+     * response. It starts from 1, to total count. It can't be larger than total
+     * count.
+     */
+    public int CurrentCount;
+
+    /**
+     * How many messages to be sent in total. Must be at least 1.
+     */
+    public int TotalCount;
+
+    /**
+     * JSON string representation of the data in this message.
+     */
+    public String Json;
+
+    public Body() {}
 }

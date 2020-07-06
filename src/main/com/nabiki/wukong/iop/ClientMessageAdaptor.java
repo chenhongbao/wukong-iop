@@ -26,12 +26,34 @@
  * SOFTWARE.
  */
 
-package com.nabiki.wukong.iop.codec;
+package com.nabiki.wukong.iop;
 
-public class Frame implements java.io.Serializable {
-    public int type;
-    public int length;
-    public byte[] body;
+import com.nabiki.ctp4j.jni.struct.CThostFtdcInvestorPositionField;
+import com.nabiki.ctp4j.jni.struct.CThostFtdcOrderField;
+import com.nabiki.ctp4j.jni.struct.CThostFtdcTradingAccountField;
+import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcOrderUUID;
 
-    public Frame() {}
+import java.util.UUID;
+
+public abstract class ClientMessageAdaptor {
+    public void rspReqOrderInsert(CThostFtdcOrderUUID order, UUID requestID,
+                                  UUID responseID, int count, int total) {
+    }
+
+    public void rspReqOrderAction(CThostFtdcOrderUUID order, UUID requestID,
+                                  UUID responseID, int count, int total) {
+    }
+
+    public void rspQryAccount(CThostFtdcTradingAccountField account, UUID requestID,
+                              UUID responseID,int count, int total) {
+    }
+
+    public void rspQryOrder(CThostFtdcOrderField rtnOrder, UUID requestID,
+                            UUID responseID,int count, int total) {
+    }
+
+    public void rspQryPosition(CThostFtdcInvestorPositionField position,
+                               UUID requestID, UUID responseID, int count,
+                               int total) {
+    }
 }

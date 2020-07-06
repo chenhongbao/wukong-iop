@@ -12,5 +12,6 @@
     <orderEntry type="library" name="slf4j-1.7.30" level="project" />
     <orderEntry type="library" name="mina-core-2.1.3" level="project" />
     <orderEntry type="library" name="junit-4.13" level="project" />
+    <orderEntry type="library" name="ctp4j-jni" level="project" />
   </component>
 </module>
