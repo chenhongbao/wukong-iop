@@ -32,8 +32,7 @@ import com.nabiki.ctp4j.jni.struct.CThostFtdcInputOrderActionField;
 import com.nabiki.ctp4j.jni.struct.CThostFtdcInputOrderField;
 import com.nabiki.ctp4j.jni.struct.CThostFtdcQryInvestorPositionField;
 import com.nabiki.ctp4j.jni.struct.CThostFtdcQryTradingAccountField;
-import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcOrderUUIDField;
-import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcSubMarketDataField;
+import com.nabiki.wukong.ctp4j.jni.struct.*;
 
 import java.util.UUID;
 
@@ -52,12 +51,24 @@ public abstract class ServerMessageAdaptor {
                            UUID requestID,int count, int total) {
     }
 
-    public void qryOrder(IOPSession session, CThostFtdcOrderUUIDField qry, UUID requestID,
+    public void qryOrder(IOPSession session, CThostFtdcOrderUuidField qry, UUID requestID,
                          int count, int total) {
     }
 
     public void qryPosition(IOPSession session,
                             CThostFtdcQryInvestorPositionField qry,
+                            UUID requestID, int count, int total) {
+    }
+
+    public void qryOrderExec(IOPSession session, CThostFtdcQryOrderExec qry,
+                             UUID requestID, int count, int total) {
+    }
+
+    public void qryActionExec(IOPSession session, CThostFtdcQryActionExec qry,
+                              UUID requestID, int count, int total) {
+    }
+
+    public void qryUserExec(IOPSession session, CThostFtdcQryUserExec qry,
                             UUID requestID, int count, int total) {
     }
 

@@ -26,28 +26,14 @@
  * SOFTWARE.
  */
 
-package com.nabiki.wukong.iop.frame;
+package com.nabiki.wukong.ctp4j.jni.struct;
 
-public enum MessageType implements java.io.Serializable {
-    HEARTBEAT,
-    SUB_MD,
-    RSP_SUB_MD,
-    FLOW_DEPTH,
-    FLOW_CANDLE,
-    REQ_ORDER_INSERT,
-    RSP_REQ_ORDER_INSERT,
-    REQ_ORDER_ACTION,
-    RSP_REQ_ORDER_ACTION,
-    QRY_ACCOUNT,
-    RSP_QRY_ACCOUNT,
-    QRY_ORDER,
-    RSP_QRY_ORDER,
-    QRY_POSITION,
-    RSP_QRY_POSITION,
-    QRY_ORDER_EXEC,
-    RSP_QRY_ORDER_EXEC,
-    QRY_ACTION_EXEC,
-    RSP_QRY_ACTION_EXEC,
-    QRY_USER_EXEC,
-    RSP_QRY_USER_EXEC
+import java.util.UUID;
+
+public class CThostFtdcQryActionExec {
+    public UUID ActionID;
+    public String BrokerID;
+    public String UserID;
+
+    public CThostFtdcQryActionExec() {}
 }

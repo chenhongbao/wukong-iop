@@ -28,12 +28,9 @@
 
 package com.nabiki.wukong.ctp4j.jni.struct;
 
-import java.util.UUID;
-
-public class CThostFtdcOrderUUIDField implements java.io.Serializable {
-    public UUID OrderID;
+public class CThostFtdcQryUserExec {
     public String BrokerID;
     public String UserID;
 
-    public CThostFtdcOrderUUIDField() {}
+    public CThostFtdcQryUserExec() {}
 }

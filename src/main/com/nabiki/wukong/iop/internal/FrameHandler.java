@@ -29,9 +29,7 @@
 package com.nabiki.wukong.iop.internal;
 
 import com.nabiki.ctp4j.jni.struct.*;
-import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcCandleField;
-import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcOrderUUIDField;
-import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcSubMarketDataField;
+import com.nabiki.wukong.ctp4j.jni.struct.*;
 import com.nabiki.wukong.iop.ClientMessageAdaptor;
 import com.nabiki.wukong.iop.ServerMessageAdaptor;
 import com.nabiki.wukong.iop.SessionAdaptor;
@@ -96,7 +94,7 @@ public class FrameHandler implements IoHandler {
                         body.RequestID, body.CurrentCount, body.TotalCount);
                 break;
             case QRY_ORDER:
-                var qryOrder = OP.fromJson(body.Json, CThostFtdcOrderUUIDField.class);
+                var qryOrder = OP.fromJson(body.Json, CThostFtdcOrderUuidField.class);
                 this.serverAdaptor.qryOrder(this.session, qryOrder, body.RequestID,
                         body.CurrentCount, body.TotalCount);
                 break;
@@ -104,6 +102,24 @@ public class FrameHandler implements IoHandler {
                 var qryAccount = OP.fromJson(body.Json,
                         CThostFtdcQryTradingAccountField.class);
                 this.serverAdaptor.qryAccount(this.session, qryAccount,
+                        body.RequestID, body.CurrentCount, body.TotalCount);
+                break;
+            case QRY_ORDER_EXEC:
+                var qryOrderExec = OP.fromJson(body.Json,
+                        CThostFtdcQryOrderExec.class);
+                this.serverAdaptor.qryOrderExec(this.session, qryOrderExec,
+                        body.RequestID, body.CurrentCount, body.TotalCount);
+                break;
+            case QRY_ACTION_EXEC:
+                var qryActionExec = OP.fromJson(body.Json,
+                        CThostFtdcQryActionExec.class);
+                this.serverAdaptor.qryActionExec(this.session, qryActionExec,
+                        body.RequestID, body.CurrentCount, body.TotalCount);
+                break;
+            case QRY_USER_EXEC:
+                var qryUserExec = OP.fromJson(body.Json,
+                        CThostFtdcQryUserExec.class);
+                this.serverAdaptor.qryUserExec(this.session, qryUserExec,
                         body.RequestID, body.CurrentCount, body.TotalCount);
                 break;
             case REQ_ORDER_ACTION:
@@ -148,13 +164,32 @@ public class FrameHandler implements IoHandler {
                 this.clientAdaptor.rspQryAccount(rspAccount, body.RequestID,
                         body.ResponseID, body.CurrentCount, body.TotalCount);
                 break;
+            case RSP_QRY_ORDER_EXEC:
+                var rspOrderExec = OP.fromJson(body.Json,
+                        CThostFtdcRspInfoField.class);
+                this.clientAdaptor.rspQryOrderExec(rspOrderExec, body.RequestID,
+                        body.ResponseID, body.CurrentCount, body.TotalCount);
+                break;
+            case RSP_QRY_ACTION_EXEC:
+                var rspActionExec = OP.fromJson(body.Json,
+                        CThostFtdcRspInfoField.class);
+                this.clientAdaptor.rspQryActionExec(rspActionExec, body.RequestID,
+                        body.ResponseID, body.CurrentCount, body.TotalCount);
+                break;
+            case RSP_QRY_USER_EXEC:
+                var rspUserExec = OP.fromJson(body.Json,
+                        CThostFtdcRspInfoField.class);
+                this.clientAdaptor.rspQryUserExec(rspUserExec, body.RequestID,
+                        body.ResponseID, body.CurrentCount, body.TotalCount);
+                break;
             case RSP_REQ_ORDER_ACTION:
-                var rspAction = OP.fromJson(body.Json, CThostFtdcOrderUUIDField.class);
+                var rspAction = OP.fromJson(body.Json,
+                        CThostFtdcActionUuidField.class);
                 this.clientAdaptor.rspReqOrderAction(rspAction, body.RequestID,
                         body.ResponseID, body.CurrentCount, body.TotalCount);
                 break;
             case RSP_REQ_ORDER_INSERT:
-                var rspInsert = OP.fromJson(body.Json, CThostFtdcOrderUUIDField.class);
+                var rspInsert = OP.fromJson(body.Json, CThostFtdcOrderUuidField.class);
                 this.clientAdaptor.rspReqOrderInsert(rspInsert, body.RequestID,
                         body.ResponseID, body.CurrentCount, body.TotalCount);
                 break;

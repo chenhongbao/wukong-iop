@@ -29,17 +29,18 @@
 package com.nabiki.wukong.iop;
 
 import com.nabiki.ctp4j.jni.struct.*;
+import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcActionUuidField;
 import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcCandleField;
-import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcOrderUUIDField;
+import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcOrderUuidField;
 
 import java.util.UUID;
 
 public abstract class ClientMessageAdaptor {
-    public void rspReqOrderInsert(CThostFtdcOrderUUIDField order, UUID requestID,
+    public void rspReqOrderInsert(CThostFtdcOrderUuidField order, UUID requestID,
                                   UUID responseID, int count, int total) {
     }
 
-    public void rspReqOrderAction(CThostFtdcOrderUUIDField order, UUID requestID,
+    public void rspReqOrderAction(CThostFtdcActionUuidField order, UUID requestID,
                                   UUID responseID, int count, int total) {
     }
 
@@ -54,6 +55,18 @@ public abstract class ClientMessageAdaptor {
     public void rspQryPosition(CThostFtdcInvestorPositionField position,
                                UUID requestID, UUID responseID, int count,
                                int total) {
+    }
+
+    public void rspQryOrderExec(CThostFtdcRspInfoField rsp, UUID requestID,
+                                UUID responseID, int count, int total) {
+    }
+
+    public void rspQryActionExec(CThostFtdcRspInfoField rsp, UUID requestID,
+                                 UUID responseID, int count, int total) {
+    }
+
+    public void rspQryUserExec(CThostFtdcRspInfoField rsp, UUID requestID,
+                                UUID responseID, int count, int total) {
     }
 
     public void rspSubscribeMarketData(CThostFtdcSpecificInstrumentField subscribe,
