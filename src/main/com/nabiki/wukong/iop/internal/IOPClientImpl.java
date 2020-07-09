@@ -47,6 +47,7 @@ public class IOPClientImpl implements IOPClient {
 
     private final NioSocketConnector connector = new NioSocketConnector();
     private final FrameHandler frameHnd = new FrameHandler();
+    private final IOPSessionImpl session = new IOPSessionImpl();
 
     public IOPClientImpl(InetSocketAddress connectAddress) throws IOException {
         this.connector.setConnectTimeoutMillis(DEFAULT_CONNECT_TIMEOUT_MILLIS);
@@ -62,7 +63,7 @@ public class IOPClientImpl implements IOPClient {
         try {
             if (future.await(DEFAULT_CONNECT_TIMEOUT_MILLIS,
                     TimeUnit.MILLISECONDS))
-                this.frameHnd.getIOPSession().wrap(future.getSession());
+                this.session.wrap(future.getSession());
             else
                 throw new IOException("connect timeout");
         } catch (InterruptedException e) {
@@ -82,6 +83,6 @@ public class IOPClientImpl implements IOPClient {
 
     @Override
     public IOPSession getSession() {
-        return this.frameHnd.getIOPSession();
+        return this.session;
     }
 }

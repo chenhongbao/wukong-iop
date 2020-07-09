@@ -35,6 +35,10 @@ import java.util.UUID;
 public interface IOPSession {
     void close();
 
+    boolean isClosed();
+
+    void fix();
+
     void sendRequest(Body message);
 
     void sendResponse(Body message);

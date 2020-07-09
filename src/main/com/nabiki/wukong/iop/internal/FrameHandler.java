@@ -30,10 +30,7 @@ package com.nabiki.wukong.iop.internal;
 
 import com.nabiki.ctp4j.jni.struct.*;
 import com.nabiki.wukong.ctp4j.jni.struct.*;
-import com.nabiki.wukong.iop.ClientMessageAdaptor;
-import com.nabiki.wukong.iop.ServerMessageAdaptor;
-import com.nabiki.wukong.iop.SessionAdaptor;
-import com.nabiki.wukong.iop.SessionEvent;
+import com.nabiki.wukong.iop.*;
 import com.nabiki.wukong.iop.frame.Body;
 import com.nabiki.wukong.iop.frame.Frame;
 import com.nabiki.wukong.iop.frame.FrameType;
@@ -52,7 +49,8 @@ public class FrameHandler implements IoHandler {
      */
     private static class DefaultSessionAdaptor implements SessionAdaptor {
         @Override
-        public void event(SessionEvent event, Object eventObject) {
+        public void event(IOPSession session, SessionEvent event,
+                          Object eventObject) {
         }
     }
 
@@ -62,8 +60,7 @@ public class FrameHandler implements IoHandler {
     private static class DefaultServerMessageAdaptor extends ServerMessageAdaptor {
     }
 
-    // Internal session that is re-wrapped at each callback and passed to adaptor.
-    private final IOPSessionImpl session = new IOPSessionImpl();
+    public static final String IOP_SESSION_KEY = "iop.session";
 
     private SessionAdaptor sessionAdaptor = new DefaultSessionAdaptor();
     private ClientMessageAdaptor clientAdaptor = new DefaultClientMessageAdaptor();
@@ -81,57 +78,53 @@ public class FrameHandler implements IoHandler {
         this.sessionAdaptor = adaptor;
     }
 
-    IOPSessionImpl getIOPSession() {
-        return this.session;
-    }
-
-    private void handleRequest(Body body) throws IOException {
+    private void handleRequest(Body body, IOPSession session) throws IOException {
         switch (body.Type) {
             case QRY_POSITION:
                 var qryPosition = OP.fromJson(body.Json,
                         CThostFtdcQryInvestorPositionField.class);
-                this.serverAdaptor.qryPosition(this.session, qryPosition,
+                this.serverAdaptor.qryPosition(session, qryPosition,
                         body.RequestID, body.CurrentCount, body.TotalCount);
                 break;
             case QRY_ORDER:
                 var qryOrder = OP.fromJson(body.Json, CThostFtdcOrderUuidField.class);
-                this.serverAdaptor.qryOrder(this.session, qryOrder, body.RequestID,
+                this.serverAdaptor.qryOrder(session, qryOrder, body.RequestID,
                         body.CurrentCount, body.TotalCount);
                 break;
             case QRY_ACCOUNT:
                 var qryAccount = OP.fromJson(body.Json,
                         CThostFtdcQryTradingAccountField.class);
-                this.serverAdaptor.qryAccount(this.session, qryAccount,
+                this.serverAdaptor.qryAccount(session, qryAccount,
                         body.RequestID, body.CurrentCount, body.TotalCount);
                 break;
             case QRY_ORDER_EXEC:
                 var qryOrderExec = OP.fromJson(body.Json,
                         CThostFtdcQryOrderExec.class);
-                this.serverAdaptor.qryOrderExec(this.session, qryOrderExec,
+                this.serverAdaptor.qryOrderExec(session, qryOrderExec,
                         body.RequestID, body.CurrentCount, body.TotalCount);
                 break;
             case QRY_ACTION_EXEC:
                 var qryActionExec = OP.fromJson(body.Json,
                         CThostFtdcQryActionExec.class);
-                this.serverAdaptor.qryActionExec(this.session, qryActionExec,
+                this.serverAdaptor.qryActionExec(session, qryActionExec,
                         body.RequestID, body.CurrentCount, body.TotalCount);
                 break;
             case QRY_USER_EXEC:
                 var qryUserExec = OP.fromJson(body.Json,
                         CThostFtdcQryUserExec.class);
-                this.serverAdaptor.qryUserExec(this.session, qryUserExec,
+                this.serverAdaptor.qryUserExec(session, qryUserExec,
                         body.RequestID, body.CurrentCount, body.TotalCount);
                 break;
             case REQ_ORDER_ACTION:
                 var reqAction = OP.fromJson(body.Json,
                         CThostFtdcInputOrderActionField.class);
-                this.serverAdaptor.reqOrderAction(this.session, reqAction,
+                this.serverAdaptor.reqOrderAction(session, reqAction,
                         body.RequestID, body.CurrentCount, body.TotalCount);
                 break;
             case REQ_ORDER_INSERT:
                 var reqOrder = OP.fromJson(body.Json,
                         CThostFtdcInputOrderField.class);
-                this.serverAdaptor.reqOrderInsert(this.session, reqOrder,
+                this.serverAdaptor.reqOrderInsert(session, reqOrder,
                         body.RequestID, body.CurrentCount, body.TotalCount);
                 break;
             case SUB_MD:
@@ -214,46 +207,60 @@ public class FrameHandler implements IoHandler {
         }
     }
 
-    private void sendHeartbeat(Body body) throws IOException {
-        this.session.sendHeartbeat(body.RequestID);
+    private void sendHeartbeat(Body body, IOPSession session) throws IOException {
+        session.sendHeartbeat(body.RequestID);
+    }
+
+    private IOPSession createOrGetIOPSession(IoSession session) {
+        var iop = session.getAttribute(IOP_SESSION_KEY);
+        if (iop == null) {
+            iop = new IOPSessionImpl().wrap(session);
+            session.setAttribute(IOP_SESSION_KEY, iop);
+        }
+        return (IOPSession)iop;
     }
 
     @Override
     public void sessionCreated(IoSession session) throws Exception {
-        this.sessionAdaptor.event(SessionEvent.CREATED, null);
+        this.sessionAdaptor.event(createOrGetIOPSession(session),
+                SessionEvent.CREATED, null);
     }
 
     @Override
     public void sessionOpened(IoSession session) throws Exception {
-        this.sessionAdaptor.event(SessionEvent.OPENED, null);
+        this.sessionAdaptor.event(createOrGetIOPSession(session),
+                SessionEvent.OPENED, null);
     }
 
     @Override
     public void sessionClosed(IoSession session) throws Exception {
-        this.sessionAdaptor.event(SessionEvent.CLOSED, null);
+        this.sessionAdaptor.event(createOrGetIOPSession(session),
+                SessionEvent.CLOSED, null);
     }
 
     @Override
     public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
-        this.sessionAdaptor.event(SessionEvent.IDLE, status);
+        this.sessionAdaptor.event(createOrGetIOPSession(session),
+                SessionEvent.IDLE, status);
     }
 
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
-        this.sessionAdaptor.event(SessionEvent.ERROR, cause);
+        this.sessionAdaptor.event(createOrGetIOPSession(session),
+                SessionEvent.ERROR, cause);
     }
 
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
         if (!(message instanceof Frame))
             throw new IllegalStateException("message is not frame");
-        this.session.wrap(session);
+        var iop = createOrGetIOPSession(session);
         var frame = (Frame) message;
         var body = OP.fromJson(new String(frame.Body, StandardCharsets.UTF_8),
                 Body.class);
         switch (frame.Type) {
             case FrameType.REQUEST:
-                handleRequest(body);
+                handleRequest(body, iop);
                 break;
             case FrameType.RESPONSE:
                 handleResponse(body);
@@ -261,7 +268,7 @@ public class FrameHandler implements IoHandler {
             case FrameType.HEARTBEAT:
                 // If it is server, send back heartbeat.
                 if (this.serverAdaptor != null)
-                    sendHeartbeat(body);
+                    sendHeartbeat(body, iop);
                 break;
             default:
                 throw new IllegalStateException("unknown frame type");
@@ -275,7 +282,8 @@ public class FrameHandler implements IoHandler {
 
     @Override
     public void inputClosed(IoSession session) throws Exception {
-        this.sessionAdaptor.event(SessionEvent.INPUT_CLOSED, null);
+        this.sessionAdaptor.event(createOrGetIOPSession(session),
+                SessionEvent.INPUT_CLOSED, null);
     }
 
     @Override

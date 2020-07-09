@@ -44,10 +44,11 @@ public class IOPSessionImpl implements IOPSession {
 
     IOPSessionImpl() {}
 
-    void wrap(IoSession ioSession) {
+    IOPSessionImpl wrap(IoSession ioSession) {
         synchronized (this) {
             this.session = ioSession;
         }
+        return this;
     }
 
     @Override
@@ -58,6 +59,21 @@ public class IOPSessionImpl implements IOPSession {
                 future.awaitUninterruptibly();
             }
         }
+    }
+
+    @Override
+    public boolean isClosed() {
+        return this.session.isClosing();
+    }
+
+    @Override
+    public void fix() {
+        if (this.session.isClosing())
+            throw new IllegalStateException("can't fix a closed session");
+        if (this.session.isWriteSuspended())
+            this.session.resumeWrite();
+        if (this.session.isReadSuspended())
+            this.session.resumeRead();
     }
 
     private void send(Body message, int type) {

@@ -29,5 +29,5 @@
 package com.nabiki.wukong.iop;
 
 public interface SessionAdaptor {
-    void event(SessionEvent event, Object eventObject);
+    void event(IOPSession session, SessionEvent event, Object eventObject);
 }
