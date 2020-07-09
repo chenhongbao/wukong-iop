@@ -36,6 +36,10 @@ import com.nabiki.wukong.ctp4j.jni.struct.CThostFtdcOrderUuidField;
 import java.util.UUID;
 
 public abstract class ClientMessageAdaptor {
+    public void rspReqLogin(CThostFtdcRspUserLoginField login, UUID requestID,
+                            UUID responseID, int count, int total) {
+    }
+
     public void rspReqOrderInsert(CThostFtdcOrderUuidField order, UUID requestID,
                                   UUID responseID, int count, int total) {
     }

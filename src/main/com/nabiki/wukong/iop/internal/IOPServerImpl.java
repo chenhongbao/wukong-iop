@@ -28,6 +28,7 @@
 
 package com.nabiki.wukong.iop.internal;
 
+import com.nabiki.wukong.IOPLoginManager;
 import com.nabiki.wukong.iop.IOPServer;
 import com.nabiki.wukong.iop.ServerMessageAdaptor;
 import com.nabiki.wukong.iop.SessionAdaptor;
@@ -71,5 +72,10 @@ public class IOPServerImpl implements IOPServer {
     @Override
     public void setMessageAdaptor(ServerMessageAdaptor adaptor) {
         this.frameHnd.setMessageAdaptor(adaptor);
+    }
+
+    @Override
+    public void setLoginManager(IOPLoginManager manager) {
+
     }
 }

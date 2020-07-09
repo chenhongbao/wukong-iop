@@ -26,14 +26,13 @@
  * SOFTWARE.
  */
 
-package com.nabiki.wukong.iop;
+package com.nabiki.wukong;
 
-import com.nabiki.wukong.IOPLoginManager;
+import com.nabiki.ctp4j.jni.struct.CThostFtdcReqUserLoginField;
+import com.nabiki.wukong.iop.IOPSession;
 
-public interface IOPServer {
-    void setSessionAdaptor(SessionAdaptor adaptor);
-
-    void setMessageAdaptor(ServerMessageAdaptor adaptor);
-
-    void setLoginManager(IOPLoginManager manager);
+public abstract class IOPLoginManager {
+    public boolean doLogin(IOPSession session, CThostFtdcReqUserLoginField login) {
+        return false;
+    }
 }

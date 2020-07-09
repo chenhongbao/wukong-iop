@@ -34,6 +34,8 @@ public enum MessageType implements java.io.Serializable {
     RSP_SUB_MD,
     FLOW_DEPTH,
     FLOW_CANDLE,
+    REQ_LOGIN,
+    RSP_REQ_LOGIN,
     REQ_ORDER_INSERT,
     RSP_REQ_ORDER_INSERT,
     REQ_ORDER_ACTION,

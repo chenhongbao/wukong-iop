@@ -36,4 +36,5 @@ public class FrameType {
     public static final int HEARTBEAT = 0x10000000;
     public static final int REQUEST = 0x10000001;
     public static final int RESPONSE = 0x10000002;
+    public static final int LOGIN = 0x10000003;
 }
