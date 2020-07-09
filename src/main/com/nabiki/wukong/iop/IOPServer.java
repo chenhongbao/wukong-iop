@@ -28,8 +28,6 @@
 
 package com.nabiki.wukong.iop;
 
-import com.nabiki.wukong.IOPLoginManager;
-
 public interface IOPServer {
     void setSessionAdaptor(SessionAdaptor adaptor);
 

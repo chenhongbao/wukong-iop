@@ -29,7 +29,6 @@
 package com.nabiki.wukong.iop.internal;
 
 import com.nabiki.ctp4j.jni.struct.*;
-import com.nabiki.wukong.IOPLoginManager;
 import com.nabiki.wukong.ctp4j.jni.struct.*;
 import com.nabiki.wukong.iop.*;
 import com.nabiki.wukong.iop.frame.Body;
